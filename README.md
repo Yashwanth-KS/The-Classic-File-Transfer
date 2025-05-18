@@ -26,7 +26,9 @@ Server will listen on localhost:12345
 
 2. **Run the Client (in another terminal):**
 
+   ```bash
    python client.py path/to/your/file.txt
+   ```
 
 3. **Check the Output:**
 
