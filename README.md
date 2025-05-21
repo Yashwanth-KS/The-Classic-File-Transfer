@@ -34,6 +34,20 @@ Server will listen on localhost:12345
 
    The client will print the transfer status and checksum verification result.
 
+## Sample Output
+
+Below is a screenshot of the client and server after a successful file transfer:
+Server:
+<img width="1099" alt="Screenshot 2025-05-21 at 12 02 35" src="https://github.com/user-attachments/assets/3bc21e42-33d5-4ed4-9f01-42b32959a5ff" />
+
+Client:
+<img width="1098" alt="Screenshot 2025-05-21 at 12 02 45" src="https://github.com/user-attachments/assets/d91be2ad-9129-4875-aa50-d57b97a2daea" />
+
+
+## Test Files
+
+Sample test files are included in the repository.  
+You can use these files to quickly test the functionality of the file transfer system.
 Contributors
 
 - [Yashwanth KS](https://github.com/Yashwanth-KS)
