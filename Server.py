@@ -41,10 +41,22 @@ def handle_client(conn):
         # Shuffle chunks to simulate out-of-order delivery
         random.shuffle(chunks)
 
-        # Send each chunk with header (sequence number and data length)
-        for seq_num, chunk_data in chunks:
+        # Send each chunk with header (sequence number and data length) and verbose output
+        import time
+        total_bytes_sent = 0
+        start_time = time.time()
+        for i, (seq_num, chunk_data) in enumerate(chunks):
             header = struct.pack("II", seq_num, len(chunk_data))
             conn.sendall(header + chunk_data)
+            total_bytes_sent += len(chunk_data)
+            elapsed = time.time() - start_time
+            percent = ((i+1)/num_chunks)*100
+            avg_time_per_chunk = elapsed/(i+1)
+            remaining_chunks = num_chunks - (i+1)
+            eta = avg_time_per_chunk * remaining_chunks
+            print(f"[SERVER] Sent chunk {i+1}/{num_chunks} (seq={seq_num}, size={len(chunk_data)} bytes) | {percent:.1f}% complete | ETA: {eta:.1f}s | Bytes sent: {total_bytes_sent}")
+        total_time = time.time() - start_time
+        print(f"[SERVER] All chunks sent. Total time: {total_time:.2f}s. Average chunk time: {total_time/num_chunks:.3f}s. Total bytes sent: {total_bytes_sent}")
 
     except Exception as e:
         print(f"Server error: {e}")

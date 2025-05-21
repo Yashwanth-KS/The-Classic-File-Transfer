@@ -50,9 +50,11 @@ def main():
             return
         checksum = checksum.decode()
 
-        # Receive all chunks
+        # Receive all chunks (with verbose output)
+        import time
         chunks = {}
-        for _ in range(num_chunks):
+        start_time = time.time()
+        for i in range(num_chunks):
             header = receive_all(s, 8)
             if not header:
                 print("Incomplete chunk header received.")
@@ -63,6 +65,16 @@ def main():
                 print(f"Incomplete data for chunk {seq_num}.")
                 return
             chunks[seq_num] = data
+
+            # Verbose output
+            elapsed = time.time() - start_time
+            percent = ((i+1)/num_chunks)*100
+            avg_time_per_chunk = elapsed/(i+1)
+            remaining_chunks = num_chunks - (i+1)
+            eta = avg_time_per_chunk * remaining_chunks
+            print(f"[CLIENT] Received chunk {i+1}/{num_chunks} (seq={seq_num}, size={data_len} bytes) | {percent:.1f}% complete | ETA: {eta:.1f}s | Remaining: {remaining_chunks}")
+        total_time = time.time() - start_time
+        print(f"[CLIENT] All chunks received. Total time: {total_time:.2f}s. Average chunk time: {total_time/num_chunks:.3f}s.")
 
         # Reassemble file
         if len(chunks) != num_chunks:
